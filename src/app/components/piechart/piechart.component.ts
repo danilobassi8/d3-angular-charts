@@ -73,6 +73,7 @@ export class PiechartComponent implements OnInit {
     this.colorScale = d3.scaleOrdinal().domain(this.dataKeys).range(d3.schemeCategory10);
   }
 
+  // If the keys are the same, we can use this method instead of the entire waterfall to see an animation
   updateSVGData(data: any) {
     this.dataKeys = data.map((e) => e.key);
     // Compute the position of each group on the pie:
