@@ -1,0 +1,29 @@
+.badges-keys {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: stretch;
+  justify-content: center;
+  align-items: baseline;
+  cursor: pointer;
+
+  .d3-piechart-key {
+    display: inline-block;
+    margin: 0 5px;
+
+    .d3-piechart-key-badge {
+      display: inline-block;
+      background-color: red;
+
+      width: 20px;
+      height: 20px;
+
+      margin: 0 5px;
+    }
+
+    .d3-piechart-key-text {
+      display: inline-block;
+      font-size: 28px;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<div id="d3-piechart"></div>
+
+<div class="badges-keys">
+  <div *ngFor="let key of dataKeys" class="d3-piechart-key" (click)="toggleDataKey(key)">
+    <!-- badge rectangle -->
+    <div class="d3-piechart-key-badge" [ngStyle]="{'background-color':colorScale(key)}"></div>
+    <!-- badge text-->
+    <div class="d3-piechart-key-text">{{key}}</div>
+  </div>
+</div>
+
+<div>
+  <button (click)="updateSVGData(data1)">data1</button>
+  <button (click)="updateSVGData(data2)">data2</button>
+</div>
