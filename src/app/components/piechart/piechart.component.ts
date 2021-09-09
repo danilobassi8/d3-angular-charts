@@ -42,15 +42,19 @@ export class PiechartComponent implements OnInit {
   data = this.data1;
 
   ngOnInit(): void {
-    this.initWaterfall(this.data);
+    this.initWaterfall();
   }
 
-  initWaterfall(data: any) {
+  initWaterfall(data: any = this.data) {
     this.buildSVG();
     this.updateSVGData(data);
   }
 
   buildSVG() {
+    // remove the previous svg if exists.
+    d3.select('#d3-piechart').remove();
+    this.svg = d3.select('#d3-container').append('div').attr('id', 'd3-piechart');
+
     this.radius = Math.min(this.width, this.height) / 2 - this.margin;
     this.innerRadius = this.radius / 2.71;
 
@@ -68,12 +72,13 @@ export class PiechartComponent implements OnInit {
   }
 
   updateSVGData(data: any) {
+    this.dataKeys = data.map((e) => e.key);
     // Compute the position of each group on the pie:
     const pie = d3
       .pie()
       .value((d: any) => {
-        const { result: isHidden } = this.isKeyHidden(d.value.key);
-        if (isHidden) {
+        const { result } = this.isKeyHiddenWithIndex(d.value.key);
+        if (result) {
           return 0;
         }
         return d.value.value;
@@ -88,7 +93,6 @@ export class PiechartComponent implements OnInit {
     const u = this.svg.selectAll('path').data(data_ready);
 
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-
     u.enter()
       .append('path')
       .merge(u)
@@ -100,40 +104,30 @@ export class PiechartComponent implements OnInit {
       })
       .attr('stroke', 'white')
       .style('stroke-width', '6px')
-      .style('opacity', 1);
+      .style('opacity', 0.9);
 
     u.exit().remove();
   }
 
-  //  prepareData(data) {
-  //    const dataKeys = [];
-  //    const dataToReturn = [];
-  //    data.forEach((element) => {
-  //      dataKeys.push(element.key);
-  //      if (!this.hiddenDataKeys.includes(element.key)) {
-  //        dataToReturn.push(element);
-  //      }
-  //    });
-  //    this.dataKeys = dataKeys; // all datakeys are allways updated
-  //    console.log(dataToReturn);
-  //    return dataToReturn;
-  //  }
-
   toggleDataKey(key: string) {
     // delete this from hidden if exists, else, add it to the list
-    const { result, index } = this.isKeyHidden(key);
+    const { result, index } = this.isKeyHiddenWithIndex(key);
     if (result) {
       this.hiddenDataKeys.splice(index, 1);
     } else {
       this.hiddenDataKeys.push(key);
     }
-    this.updateSVGData(this.data);
+    this.initWaterfall();
   }
-  isKeyHidden(key: string) {
+  isKeyHiddenWithIndex(key: string) {
     const index = this.hiddenDataKeys.indexOf(key);
     if (index > -1) {
       return { result: true, index };
     }
     return { result: false, index: undefined };
+  }
+  isKeyHidden(key): boolean {
+    const { result } = this.isKeyHiddenWithIndex(key);
+    return result;
   }
 }

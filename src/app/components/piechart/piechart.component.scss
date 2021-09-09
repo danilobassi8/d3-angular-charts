@@ -25,5 +25,8 @@
       display: inline-block;
       font-size: 28px;
     }
+    .d3-piechart-key-text.hidden {
+      text-decoration: line-through;
+    }
   }
 }
