@@ -13,6 +13,7 @@ export class PiechartComponent implements OnInit {
   width = 500;
   height = 500;
   margin = 40;
+  strokeWidth = 7;
   animationDuration = 1000; //ms
 
   // calculated
@@ -46,6 +47,7 @@ export class PiechartComponent implements OnInit {
   }
 
   initWaterfall(data: any = this.data) {
+    this.data = data;
     this.buildSVG();
     this.updateSVGData(data);
   }
@@ -103,7 +105,7 @@ export class PiechartComponent implements OnInit {
         return this.colorScale(d.data.value.key);
       })
       .attr('stroke', 'white')
-      .style('stroke-width', '6px')
+      .style('stroke-width', `${this.strokeWidth}px`)
       .style('opacity', 0.9);
 
     u.exit().remove();
