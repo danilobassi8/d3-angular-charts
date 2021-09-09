@@ -98,10 +98,18 @@ export class PiechartComponent implements OnInit {
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
     u.enter()
       .append('path')
+      .attr('data-toggle', 'tooltip')
+      .attr('data-placement', 'left')
+      .attr('title', (d: any, i: any, n: any) => {
+        return d.data.value.key;
+      })
+      .on('mouseover', (d: any, i: any, n: any) => {})
+      .on('mouseout', (d: any, i: any, n: any) => {})
       .merge(u)
       .transition()
       .duration(this.animationDuration)
       .attr('d', d3.arc().innerRadius(this.innerRadius).outerRadius(this.radius))
+
       .attr('fill', (d: any) => {
         return this.colorScale(d.data.value.key);
       })
